@@ -14,16 +14,20 @@ var level01 = function (window) {
         var levelData = {
             name: "Robot Romp",
             number: 1, 
-            speed: -3,
+            speed: -5,
             gameItems: [
-                {type: 'sawblade',x:400,y:groundY},
-                {type: 'sawblade',x:600,y:groundY},
-                {type: 'sawblade',x:900,y:groundY}
+                {type: 'sawblade',x:500,y:groundY-150},
+                {type: 'sawblade',x:1000,y:groundY-150},
+                {type: 'sawblade',x:1300,y:groundY},
+                {type: 'Red_Shell_-_Mario_Kart_Wii', x:700, y:groundY-20},
+                {type: 'Red_Shell_-_Mario_Kart_Wii', x:1125, y:groundY-100},
+                {type: 'Red_Shell_-_Mario_Kart_Wii', x:350, y:groundY-100},
+                {type: 'cherry',x:1600,y:300}
             ]
         };
         window.levelData = levelData;
         // set this to true or false depending on if you want to see hitzones
-        game.setDebugMode(true);
+        game.setDebugMode(false);
 
         // BEGIN EDITING YOUR CODE HERE
         
@@ -31,29 +35,46 @@ var level01 = function (window) {
             var hitZoneSize = 25;
             var damageFromObstacle = 10;
             var myObstacle = game.createObstacle(hitZoneSize,damageFromObstacle);
+            myObstacle.x = x;
+            myObstacle.y = y;
             game.addGameItem(myObstacle);    
             var obstacleImage = draw.bitmap('img/sawblade.png');
             myObstacle.addChild(obstacleImage);
-            obstacleImage.x = x;
-            obstacleImage.y =y;
-        }
-        createSawBlade(400 , 250);
-        createSawBlade(200 , 300);
-        createSawBlade(600 , 350);
-        for (var i =0; i< levelData.gameItems; i++){
-        createSawBlade(400 , 300);
-        createSawBlade(500 , 250);
+            obstacleImage.x = -25;
+            obstacleImage.y = -25;
         }
         
+        for (var i =0; i < levelData.gameItems.length; i++){
+            if (levelData.gameItems[i].type==='sawblade'){
+                createSawBlade(levelData.gameItems[i].x, levelData.gameItems[i].y );
+            }else if (levelData.gameItems[i].type==='Red_Shell_-_Mario_Kart_Wii'){
+                createTurtle(levelData.gameItems[i].x, levelData.gameItems[i].y );
+            }else{
+                reward(levelData.gameItems[i].x, levelData.gameItems[i].y );
+            }
+        }
+        function createTurtle(x,y){
+            var hitZoneSize = 15;
+            var damageFromObstacle = 10;
+            var myObstacle = game.createObstacle(hitZoneSize,damageFromObstacle);
+            myObstacle.x = x;
+            myObstacle.y = y;
+            game.addGameItem(myObstacle);    
+            var obstacleImage = draw.bitmap('img/Red_Shell_-_Mario_Kart_Wii.png');
+            myObstacle.addChild(obstacleImage);
+            obstacleImage.x = -25;
+            obstacleImage.y = -25;
+        }
+        function createEnemy(x,y) {
         var enemy =  game.createGameItem('enemy',25);
         var redSquare = draw.rect(50,50,'red');
         redSquare.x = -25;
         redSquare.y = -25;
         enemy.addChild(redSquare);
-        enemy.x = 400;
-        enemy.y = groundY-50;
+        enemy.x = x;
+        enemy.y = groundY-y;
         game.addGameItem(enemy);
-        function createEnemy(x,y) {
+        
         enemy.velocityX = -2;
         enemy.rotationalVelocity = 10;
         enemy.onPlayerCollision = function() {
@@ -66,11 +87,32 @@ var level01 = function (window) {
             game.increaseScore(100);
             enemy.fadeOut();
         };
-        }   
-        createEnemy(400,200);
-        createEnemy(800,300);
-        createEnemy(200, 400);
-    }
+        }
+        
+        createEnemy(500,50);
+        createEnemy(900,50);
+        createEnemy(300, 50);
+        
+        function reward(x,y){
+            var reward = game.createGameItem('reward', 90)
+            reward.onPlayerCollision = function() {
+                console.log('Halle has hit the reward');
+                game.increaseScore(1000);
+                reward.fadeOut();
+            };
+            reward.velocityX= -2;
+            
+            reward.x = x;
+            reward.y = y;
+            game.addGameItem(reward);    
+            var obstacleImage = draw.bitmap('img/cherry.png');
+            reward.addChild(obstacleImage);
+            obstacleImage.x = -25;
+            obstacleImage.y = -25;
+            reward.onPlayerCollision;
+        }
+        
+    };
 };
 
 // DON'T REMOVE THIS CODE //////////////////////////////////////////////////////

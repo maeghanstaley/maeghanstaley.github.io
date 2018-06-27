@@ -38,6 +38,7 @@ var background = function (window) {
             background.addChild(backgroundFill);
             
             // TODO: 3 - Add a moon and starfield
+           
             var circle;
             for(var i=0; i<1000; i++) {
                 circle = draw.circle(1,'white','LightGray',2);
@@ -51,12 +52,13 @@ var background = function (window) {
                 moon.scaleX = 0.3;
                 moon.scaleY = 0.3;
                 background.addChild(moon);
+            
             }
             
             // TODO: 5 - Add buildings!     Q: This is before TODO 4 for a reason! Why?
-            var buildingHeight = 100
+            var buildingHeight = 100;
             var building;
-            for(var i=0; i<10; ++i) {
+            for(var i=0; i<10; i++) {
                 buildingHeight= Math.floor(Math.random() * (300 - 150 + 1))+ 150;
                 building = draw.rect(70,buildingHeight,'Black','Black',1);
                 building.x = 200*i;
@@ -68,10 +70,11 @@ var background = function (window) {
             
             // TODO 4: Part 1 - Add a tree
             tree = draw.bitmap('img/tree.png');
-            tree.x =  500;
-            tree.y = canvasHeight - 650;
+            tree.x =  900;
+            tree.y = canvasHeight - 700;
             background.addChild(tree);
-            
+             
+             
         }
         
         // Perform background animation
@@ -87,6 +90,7 @@ var background = function (window) {
             if(tree.x < -200) {
                 tree.x = canvasWidth;
             }
+           
             // TODO 5: Part 2 - Parallax
              for (var i = 0; i<10; i++){
              buildings[i].x = buildings[i].x - 1;
@@ -94,6 +98,7 @@ var background = function (window) {
               buildings[i].x = canvasWidth;
              }
              }
+             
         }
 
         background = new createjs.Container();
